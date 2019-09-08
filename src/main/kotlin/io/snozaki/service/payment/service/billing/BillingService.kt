@@ -8,5 +8,5 @@ import reactor.core.publisher.Flux
 @Service
 interface BillingService {
 
-    fun bill(req: BillingRequest): Flux<Billing>
+    fun bill(orderIds: List<String>, merchantId: String): Flux<Billing>
 }

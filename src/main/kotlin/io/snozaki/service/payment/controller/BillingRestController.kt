@@ -1,5 +1,8 @@
 package io.snozaki.service.payment.controller
 
+import io.snozaki.service.payment.config.trace
+import io.snozaki.service.payment.config.error
+import io.snozaki.service.payment.consts.app.STATUS_MESSAGE_OK
 import io.snozaki.service.payment.dto.GeneralResponse
 import io.snozaki.service.payment.dto.billing.BillingRequest
 import io.snozaki.service.payment.dto.billing.BillingRequestElement
@@ -16,30 +19,36 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Flux
-import reactor.util.function.Tuple2
+import java.lang.Exception
 
+/**
+ * 請求REST Controllerクラス
+ */
 @RestController
 @RequestMapping("/v1")
-class BillingRestController(@Autowired private val billingService: BillingService, @Autowired private var orderFetchService: OrderFetchService) {
+class BillingRestController @Autowired constructor(private var billingService: BillingService, private var orderFetchService: OrderFetchService) {
 
+    /**
+     * 実装メソッド
+     */
     @RequestMapping(value=["/order/billing"], consumes=[MediaType.APPLICATION_JSON_UTF8_VALUE], method=[RequestMethod.POST])
-    fun bill(@RequestBody req: BillingRequest): GeneralResponse<BillingResponse> {
+    @Throws(Exception::class)
+    fun bill(@RequestBody req: BillingRequest): Flux<GeneralResponse<BillingResponse>> {
 
-        // 注文IDのリストに抽出
-        var orderIds: List<String> = req.billings.flatMap { elm: BillingRequestElement -> mutableListOf(elm.orderId) }
+        // 注文IDのリストに平坦化
+        var orderIds: List<String> = req.billings.flatMap { elm: BillingRequestElement -> listOf(elm.orderId) }
 
-        Flux.zip(
-                orderFetchService.fetch(orderIds, req.merchantId),
-                billingService.bill(req)
-        ).map { t: Tuple2<Order, Billing> -> {
-            var billed: Billing = t.t2
-            GeneralResponse(
-                    ok = true,
-                    message = "",
-                    value = BillingResponse(mutableListOf(BillingResponseElement(billed.orderId, ""))))
-            }
-        }
-        
-        TODO()
+        return orderFetchService.fetch(orderIds, req.merchantId)
+                .doFirst { trace("Controllerの処理を開始します。") }
+                .flatMap { orders: Order -> billingService.bill(orderIds, req.merchantId) }
+                .map { t: Billing ->
+                    GeneralResponse(
+                            ok = true,
+                            message = STATUS_MESSAGE_OK,
+                            value = BillingResponse(mutableListOf(BillingResponseElement(t.orderId, t.billingStatus))))
+                }
+                .doOnComplete { trace("Controllerの処理を正常に終了しました。") }
+                .doOnError { e: Throwable -> error(e) }
+                .log()
     }
 }

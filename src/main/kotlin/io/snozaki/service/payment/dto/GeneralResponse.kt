@@ -1,6 +1,6 @@
 package io.snozaki.service.payment.dto
 
-data class GeneralResponse<T> (var ok: Boolean, var message: String, var value: T) {
+data class GeneralResponse<T> (var ok: Boolean, var message: String, var value: T?) {
 
     class Builder<T> {
         var ok: Boolean? = true
@@ -10,7 +10,7 @@ data class GeneralResponse<T> (var ok: Boolean, var message: String, var value: 
         fun <S> build(): GeneralResponse<T> = GeneralResponse(
                 ok = requireNotNull(this.ok),
                 message = requireNotNull(this.message),
-                value = requireNotNull(this.value)
+                value = this.value
         )
 
         companion object {

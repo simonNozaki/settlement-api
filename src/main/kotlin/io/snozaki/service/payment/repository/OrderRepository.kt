@@ -10,21 +10,21 @@ import org.springframework.stereotype.Repository
 class OrderRepository {
 
     var orders: MutableList<Order> = mutableListOf(
-            Order("", "", "", "",
+            Order("190908000001", "mt00000001", "merchant001", "1000",
                 Customer("", "", "", "", ""),
-                mutableListOf(Item("", ""))
+                mutableListOf(Item("hat", "1000", "1"))
             ),
-            Order("", "", "", "",
+            Order("190908000002", "mt00000001", "merchant002", "3000",
                     Customer("", "", "", "", ""),
-                    mutableListOf(Item("", ""))
+                    mutableListOf(Item("hat", "1000", "3"))
             ),
-            Order("", "", "", "",
+            Order("190908000003", "mt00000001", "merchant003", "5000",
                     Customer("", "", "", "", ""),
-                    mutableListOf(Item("", ""))
+                    mutableListOf(Item("hat", "1000", "5"))
             ),
-            Order("", "", "", "",
+            Order("190908000004", "mt00000001", "merchant004", "7000",
                     Customer("", "", "", "", ""),
-                    mutableListOf(Item("", ""))
+                    mutableListOf(Item("hat", "1000", "7"))
             )
     )
 
@@ -34,7 +34,24 @@ class OrderRepository {
      * @return 注文リスト
      */
     fun getOrdersByMerchant(merchantId: String): MutableList<Order> {
-        return this.orders.filter { it.merchantId == merchantId }.map { it }.toMutableList()
+        return this.orders.filter { it.merchantId == merchantId }.toMutableList()
+    }
+
+    /**
+     * 注文IDで注文情報を取得する
+     */
+    fun getOrdersByOrderId(orderIds: List<String>): MutableList<Order> {
+        return this.orders.filter { order: Order -> orderIds.contains(order.id) }.toMutableList()
+    }
+
+    /**
+     * 加盟店ID、注文IDで注文情報の一覧を取得する
+     */
+    fun getOrderByOrderAndMerchant(orderIds: List<String>, merchantId: String): MutableList<Order> {
+        return this.orders
+                .filter { order: Order -> order.merchantId.equals(merchantId) }
+                .filter { order: Order -> orderIds.contains(order.id) }
+                .toMutableList()
     }
 
 }
