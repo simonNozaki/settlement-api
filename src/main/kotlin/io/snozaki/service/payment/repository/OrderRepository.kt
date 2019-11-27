@@ -1,13 +1,16 @@
 package io.snozaki.service.payment.repository
 
-import io.snozaki.service.payment.entity.merchant.Merchant
+import io.snozaki.service.payment.config.SimpleMongoConfigurer
 import io.snozaki.service.payment.entity.order.Customer
 import io.snozaki.service.payment.entity.order.Item
 import io.snozaki.service.payment.entity.order.Order
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.mongodb.core.query.Criteria
+import org.springframework.data.mongodb.core.query.Query
 import org.springframework.stereotype.Repository
 
 @Repository
-class OrderRepository {
+class OrderRepository (@Autowired private val simpleMongoConfigurer: SimpleMongoConfigurer) {
 
     var orders: MutableList<Order> = mutableListOf(
             Order("190908000001", "mt00000001", "merchant001", "1000",
@@ -52,6 +55,12 @@ class OrderRepository {
                 .filter { order: Order -> order.merchantId.equals(merchantId) }
                 .filter { order: Order -> orderIds.contains(order.id) }
                 .toMutableList()
+    }
+
+    fun fetchOrderByOrderAndMerchant(orderIds: List<String>, merchantId: String): MutableList<Order> {
+        var criteria: Criteria = Criteria.where("merchantId").`is`(merchantId).and("orderId").`in`(orderIds)
+        var query: Query = Query(criteria)
+        return simpleMongoConfigurer.mongoTemplate().find(query, Order::class.java)
     }
 
 }

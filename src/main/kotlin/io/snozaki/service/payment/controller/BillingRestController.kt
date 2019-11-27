@@ -39,15 +39,19 @@ class BillingRestController @Autowired constructor(private var billingService: B
         var orderIds: List<String> = req.billings.flatMap { elm: BillingRequestElement -> listOf(elm.orderId) }
 
         return orderFetchService.fetch(orderIds, req.merchantId)
-                .doFirst { trace("Controllerの処理を開始します。") }
-                .flatMap { orders: Order -> billingService.bill(orderIds, req.merchantId) }
+                .doFirst {
+                    trace("Controllerの処理を開始します。実行スレッド:${Thread.currentThread().name}")
+                }
+                .flatMap { orders: Order -> billingService.bill(listOf(orders.id), req.merchantId) }
                 .map { t: Billing ->
                     GeneralResponse(
                             ok = true,
                             message = STATUS_MESSAGE_OK,
                             value = BillingResponse(mutableListOf(BillingResponseElement(t.orderId, t.billingStatus))))
                 }
-                .doOnComplete { trace("Controllerの処理を正常に終了しました。") }
+                .doOnComplete {
+                    trace("Controllerの処理を正常に終了しました。実行スレッド:${Thread.currentThread().name}")
+                }
                 .doOnError { e: Throwable -> error(e) }
                 .log()
     }

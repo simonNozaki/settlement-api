@@ -1,0 +1,30 @@
+[
+    {
+    	"orderId" : "190908000001",
+    	"merchantId" : "merchant001",
+    	"billingStatus" : "0",
+    	"remindStatus" : "0",
+    	"payment" : "0"
+    },
+    {
+    	"orderId" : "190908000002",
+    	"merchantId" : "merchant001",
+    	"billingStatus" : "0",
+    	"remindStatus" : "0",
+    	"payment" : "0"
+    },
+    {
+    	"orderId" : "190908000003",
+    	"merchantId" : "merchant001",
+    	"billingStatus" : "0",
+    	"remindStatus" : "0",
+    	"payment" : "0"
+    },
+    {
+    	"orderId" : "190908000004",
+    	"merchantId" : "merchant001",
+    	"billingStatus" : "0",
+    	"remindStatus" : "0",
+    	"payment" : "0"
+    }
+]
