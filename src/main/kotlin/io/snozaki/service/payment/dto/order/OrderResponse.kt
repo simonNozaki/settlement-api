@@ -1,5 +1,10 @@
 package io.snozaki.service.payment.dto.order
 
-data class OrderResponse (
-        var orders: MutableList<OrderResponseElement>
-)
+import io.snozaki.service.payment.dto.AbstractResponse
+
+/**
+ * 注文レスポンスデータ
+ */
+class OrderResponse<OrderResponseElement> (
+        override var ids: MutableList<OrderResponseElement>
+    ) : AbstractResponse<OrderResponseElement> ()

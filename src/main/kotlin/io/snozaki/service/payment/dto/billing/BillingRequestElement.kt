@@ -1,5 +1,7 @@
 package io.snozaki.service.payment.dto.billing
 
+import io.snozaki.service.payment.dto.AbstractRequestElement
+
 data class BillingRequestElement (
-        var orderId: String
-)
+        override var orderId: String
+)  : AbstractRequestElement()

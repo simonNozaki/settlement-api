@@ -1,5 +1,12 @@
 package io.snozaki.service.payment.dto.billing
 
-data class BillingResponse (
-        var billings: MutableList<BillingResponseElement>
+import io.snozaki.service.payment.dto.AbstractResponse
+
+/**
+ * 請求レスポンスデータ
+ */
+data class BillingResponse(
+        override var ids: MutableList<BillingResponseElement>
+    ) : AbstractResponse<BillingResponseElement>(
+
 )

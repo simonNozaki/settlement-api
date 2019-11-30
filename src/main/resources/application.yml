@@ -1,0 +1,4 @@
+mongodb:
+  db: settlment
+  host: localhost
+  port: 27017

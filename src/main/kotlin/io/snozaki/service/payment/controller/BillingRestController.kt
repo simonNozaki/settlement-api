@@ -2,6 +2,9 @@ package io.snozaki.service.payment.controller
 
 import io.snozaki.service.payment.config.trace
 import io.snozaki.service.payment.config.error
+import io.snozaki.service.payment.consts.app.API_VERSION
+import io.snozaki.service.payment.consts.app.FUNCTION_BILLING
+import io.snozaki.service.payment.consts.app.FUNCTION_DOMAIN_ORDER
 import io.snozaki.service.payment.consts.app.STATUS_MESSAGE_OK
 import io.snozaki.service.payment.dto.GeneralResponse
 import io.snozaki.service.payment.dto.billing.BillingRequest
@@ -12,6 +15,7 @@ import io.snozaki.service.payment.entity.billing.Billing
 import io.snozaki.service.payment.entity.order.Order
 import io.snozaki.service.payment.service.billing.BillingService
 import io.snozaki.service.payment.service.order.OrderFetchService
+import io.snozaki.service.payment.util.isValidRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.RequestBody
@@ -25,19 +29,23 @@ import java.lang.Exception
  * 請求REST Controllerクラス
  */
 @RestController
-@RequestMapping("/v1")
+@RequestMapping(API_VERSION)
 class BillingRestController @Autowired constructor(private var billingService: BillingService, private var orderFetchService: OrderFetchService) {
 
     /**
      * 実装メソッド
      */
-    @RequestMapping(value=["/order/billing"], consumes=[MediaType.APPLICATION_JSON_UTF8_VALUE], method=[RequestMethod.POST])
+    @RequestMapping(value=[FUNCTION_DOMAIN_ORDER + FUNCTION_BILLING], consumes=[MediaType.APPLICATION_JSON_UTF8_VALUE], method=[RequestMethod.POST])
     @Throws(Exception::class)
-    fun bill(@RequestBody req: BillingRequest): Flux<GeneralResponse<BillingResponse>> {
+    fun bill(@RequestBody req: BillingRequest<BillingRequestElement>): Flux<GeneralResponse<BillingResponse>> {
+
+        // 引数チェック、不正な場合空のFluxを返却
+        if(!isValidRequest(req)) respondFalse<Order>()
 
         // 注文IDのリストに平坦化
-        var orderIds: List<String> = req.billings.flatMap { elm: BillingRequestElement -> listOf(elm.orderId) }
+        var orderIds: List<String> = req.objects.flatMap { elm: BillingRequestElement -> listOf(elm.orderId) }
 
+        // 正常系処理
         return orderFetchService.fetch(orderIds, req.merchantId)
                 .doFirst {
                     trace("Controllerの処理を開始します。実行スレッド:${Thread.currentThread().name}")
