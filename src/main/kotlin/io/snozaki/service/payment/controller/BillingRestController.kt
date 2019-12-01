@@ -37,10 +37,10 @@ class BillingRestController @Autowired constructor(private var billingService: B
      */
     @RequestMapping(value=[FUNCTION_DOMAIN_ORDER + FUNCTION_BILLING], consumes=[MediaType.APPLICATION_JSON_UTF8_VALUE], method=[RequestMethod.POST])
     @Throws(Exception::class)
-    fun bill(@RequestBody req: BillingRequest<BillingRequestElement>): Flux<GeneralResponse<BillingResponse>> {
+    fun bill(@RequestBody req: BillingRequest<BillingRequestElement>): Flux<GeneralResponse<BillingResponse<BillingResponseElement>>> {
 
         // 引数チェック、不正な場合空のFluxを返却
-        if(!isValidRequest(req)) respondFalse<Order>()
+        if(!isValidRequest(req)) respondFalse<BillingResponse<BillingResponseElement>, BillingResponseElement>()
 
         // 注文IDのリストに平坦化
         var orderIds: List<String> = req.objects.flatMap { elm: BillingRequestElement -> listOf(elm.orderId) }

@@ -35,7 +35,7 @@ class OrderRestController @Autowired constructor(private var orderFetchService: 
     fun execute(@RequestBody req: OrderRequest<OrderRequestElement>): Flux<GeneralResponse<OrderResponse<OrderResponseElement>>> {
 
         // 引数チェック、不正な場合空のFluxを返却
-        if(!isValidRequest(req)) respondFalse<Order>()
+        if(!isValidRequest(req)) respondFalse<OrderResponse<OrderResponseElement>, OrderResponseElement>()
 
         // 注文IDの平坦化
         var orderIds: List<String> = req.objects.flatMap { elm: OrderRequestElement -> listOf(elm.orderId) }

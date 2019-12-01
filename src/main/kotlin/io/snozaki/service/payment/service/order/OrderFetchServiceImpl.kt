@@ -19,7 +19,7 @@ class OrderFetchServiceImpl(@Autowired private var orderRepository: OrderReposit
      * @return 注文情報可変リスト
      */
     override fun fetch(orderIds: List<String>, merchantId: String): Flux<Order> {
-        return Flux.fromIterable(orderRepository.getOrderByOrderAndMerchant(orderIds, merchantId)).log()
-        // return Flux.fromIterable(orderRepository.fetchOrderByOrderAndMerchant(orderIds, merchantId)).log()
+//        return Flux.fromIterable(orderRepository.getOrderByOrderAndMerchant(orderIds, merchantId)).log()
+        return Flux.fromIterable(orderRepository.fetchOrderByOrderAndMerchant(orderIds, merchantId)).log()
     }
 }
