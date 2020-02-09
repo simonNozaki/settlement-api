@@ -16,9 +16,6 @@ import reactor.core.publisher.Flux
 @Service
 class BillingServiceImpl(@Autowired private val billingRepository: BillingRepository, @Autowired private val orderRepository: OrderRepository) : BillingService {
 
-    /**
-     * 注文を請求する
-     */
     override fun bill(orderIds: List<String>, merchantId: String): Flux<Billing> {
 
         // 加盟店の注文一覧
@@ -27,5 +24,12 @@ class BillingServiceImpl(@Autowired private val billingRepository: BillingReposi
 
         // 対象の注文を請求中に更新
         return Flux.fromIterable(billingRepository.updateBillingStatusToFirst(targetOrderIds)).log()
+    }
+
+    override fun billOrders(orderIds: List<String>, merchantId: String): List<Billing> {
+        var targetOrders: MutableList<Order> = orderRepository.getOrderByOrderAndMerchant(orderIds, merchantId)
+        var targetOrderIds: MutableList<String> = targetOrders.flatMap { listOf(it.id) }.toMutableList()
+
+        return billingRepository.updateBillingStatusToFirst(targetOrderIds)
     }
 }
