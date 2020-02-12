@@ -1,4 +1,4 @@
-package io.snozaki.service.payment.controller
+package io.snozaki.service.payment.util
 
 import io.snozaki.service.payment.config.trace
 import io.snozaki.service.payment.config.error
@@ -6,6 +6,7 @@ import io.snozaki.service.payment.consts.app.API_VERSION
 import io.snozaki.service.payment.consts.app.FUNCTION_BILLING
 import io.snozaki.service.payment.consts.app.FUNCTION_DOMAIN_ORDER
 import io.snozaki.service.payment.consts.app.STATUS_MESSAGE_OK
+import io.snozaki.service.payment.controller.respondFalse
 import io.snozaki.service.payment.dto.GeneralResponse
 import io.snozaki.service.payment.dto.billing.BillingRequest
 import io.snozaki.service.payment.dto.billing.BillingRequestElement
@@ -15,7 +16,6 @@ import io.snozaki.service.payment.entity.billing.Billing
 import io.snozaki.service.payment.entity.order.Order
 import io.snozaki.service.payment.service.billing.BillingService
 import io.snozaki.service.payment.service.order.OrderFetchService
-import io.snozaki.service.payment.util.isValidRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.RequestBody

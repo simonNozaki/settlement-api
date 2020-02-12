@@ -3,6 +3,11 @@ package io.snozaki.service.payment.util
 import io.snozaki.service.payment.dto.AbstractRequest
 import io.snozaki.service.payment.dto.AbstractRequestElement
 
+/**
+ * リクエストの正常性を判定します。加盟店IDと注文IDリストがすべて正しく設定されていることを確認します。
+ * @param t リクエストオブジェクト。@code{AbstractRequest}の継承した具象クラスを受け付けます。
+ * @return 真偽値
+ */
 fun <T : AbstractRequest<E>, E: AbstractRequestElement> isValidRequest(t: T): Boolean {
 
     if ( !isValidMerchantId(t.merchantId) ) return false
@@ -16,12 +21,12 @@ fun <T : AbstractRequest<E>, E: AbstractRequestElement> isValidRequest(t: T): Bo
 /**
  * 半角英数字パターン
  */
-const val REGEX_HALFSIZED_ALPHABET_NUMBER = "/^[0-9a-zA-Z]*\$/"
+private const val REGEX_HALFSIZED_ALPHABET_NUMBER = "/^[0-9a-zA-Z]*\$/"
 
 /**
  * 加盟店IDチェック
  */
-private fun isValidMerchantId(merchantId: String): Boolean {
+fun isValidMerchantId(merchantId: String): Boolean {
     // 桁数チェック
     if(merchantId.chars().count().toInt() >= 40) return false
 

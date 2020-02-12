@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
 	id("org.springframework.boot") version "2.2.1.RELEASE"
 	id("io.spring.dependency-management") version "1.0.8.RELEASE"
+	id("org.jetbrains.kotlin.plugin.noarg") version "1.3.60"
 	war
 	kotlin("jvm") version "1.3.60"
 	kotlin("plugin.spring") version "1.3.60"
@@ -22,6 +23,10 @@ configurations {
 	}
 }
 
+noArg {
+	annotation("io.snozaki.service.payment.annotation.NoArg")
+}
+
 repositories {
 	mavenCentral()
 }
@@ -29,6 +34,7 @@ repositories {
 dependencies {
 	// Spring
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
+	implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
 
 	// kotlin拡張

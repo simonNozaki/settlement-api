@@ -1,4 +1,4 @@
-package io.snozaki.service.payment.controller
+package io.snozaki.service.payment.controller.billing
 
 import io.snozaki.service.payment.consts.app.API_VERSION
 import io.snozaki.service.payment.dto.BillingApiResponse
