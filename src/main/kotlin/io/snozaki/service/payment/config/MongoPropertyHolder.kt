@@ -19,5 +19,5 @@ class MongoPropertyHolder {
 
     lateinit var password: String
 
-    lateinit var applicationname: String
+    lateinit var applicaitionname: String
 }

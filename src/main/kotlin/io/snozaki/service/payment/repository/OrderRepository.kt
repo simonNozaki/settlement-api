@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.query.Query
 import org.springframework.stereotype.Repository
 
 @Repository
-class OrderRepository (@Autowired private val simpleMongoConfigurer: SimpleMongoConfigurer) {
+class OrderRepository (private val simpleMongoConfigurer: SimpleMongoConfigurer) {
 
     var orders: MutableList<Order> = mutableListOf(
             Order("190908000001", "mt00000001", "merchant001", "1000",

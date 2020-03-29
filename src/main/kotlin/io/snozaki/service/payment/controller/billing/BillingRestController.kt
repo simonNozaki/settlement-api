@@ -1,4 +1,4 @@
-package io.snozaki.service.payment.util
+package io.snozaki.service.payment.controller.billing
 
 import io.snozaki.service.payment.config.trace
 import io.snozaki.service.payment.config.error
@@ -16,6 +16,7 @@ import io.snozaki.service.payment.entity.billing.Billing
 import io.snozaki.service.payment.entity.order.Order
 import io.snozaki.service.payment.service.billing.BillingService
 import io.snozaki.service.payment.service.order.OrderFetchService
+import io.snozaki.service.payment.util.isValidRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.RequestBody

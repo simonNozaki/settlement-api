@@ -8,8 +8,14 @@ spring:
     mongodb:
       host: localhost
       port: 27017
-      uri: mongodb://localhost/settlement
       database: settlement
       username: settlement-user
       password: 21405apple
       applicaitionname: settlement-api
+
+debug:
+  false
+
+server:
+  port:
+    8080

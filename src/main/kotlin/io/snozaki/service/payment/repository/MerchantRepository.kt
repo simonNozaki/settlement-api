@@ -1,7 +1,9 @@
 package io.snozaki.service.payment.repository
 
 import io.snozaki.service.payment.entity.merchant.Merchant
+import org.springframework.stereotype.Repository
 
+@Repository
 class MerchantRepository {
 
     private var merchants: MutableList<Merchant> = mutableListOf(

@@ -5,21 +5,13 @@ import io.snozaki.service.payment.dto.AbstractApiResponse
 /**
  * APIエラーレスポンスクラス。
  */
-class ErrorApiResponse : AbstractApiResponse<Nothing>() {
+class ErrorApiResponse : AbstractApiResponse<Any>() {
 
-    override var ok: Boolean
-        get() = this.ok
-        set(ok) { this.ok = ok }
+    override var ok: Boolean = false
 
-    override var message: String?
-        get() = this.message
-        set(message) { this.message = message }
+    override var message: String? = null
 
-    override var errors: CommonError?
-        get() =  this.errors
-        set(errors) { this.errors = errors }
+    override var errors: CommonError? = null
 
-    override var value: Nothing
-        get() =  this.value
-        set(value) { this.value = value }
+    override lateinit var value: Any
 }

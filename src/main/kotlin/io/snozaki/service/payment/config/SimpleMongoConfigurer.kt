@@ -24,7 +24,7 @@ class SimpleMongoConfigurer(private val mongoPropertyHolder: MongoPropertyHolder
         var credential = MongoCredential.createCredential(mongoPropertyHolder.username, databaseName, mongoPropertyHolder.password.toCharArray())
         var mongoClientOptions = MongoClientOptions
                 .builder()
-                .applicationName(mongoPropertyHolder.applicationname)
+                .applicationName(mongoPropertyHolder.applicaitionname)
                 .build()
         return MongoClient(mongoPropertyHolder.host, mongoClientOptions)
     }

@@ -5,7 +5,6 @@ import io.snozaki.service.payment.dto.GeneralResponse
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
@@ -16,13 +15,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 class CommonExceptionHandler : ResponseEntityExceptionHandler() {
 
-    /**
-     * 例外の処理
-     */
-    @ExceptionHandler(Exception::class)
-    fun handleAllException(e: Exception, request: WebRequest): ResponseEntity<Any> {
+    override fun handleExceptionInternal(ex: Exception, body: Any?, headers: HttpHeaders, status: HttpStatus, request: WebRequest): ResponseEntity<Any> {
         return super.handleExceptionInternal(
-                e,
+                ex,
                 GeneralResponse(
                         ok = false,
                         message = STATUS_MESSAGE_INTERNAL_SERVER_ERROR,

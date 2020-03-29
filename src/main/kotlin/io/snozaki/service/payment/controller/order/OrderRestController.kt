@@ -29,7 +29,7 @@ import java.lang.Exception
 @RequestMapping(API_VERSION)
 class OrderRestController @Autowired constructor(private var orderFetchService: OrderFetchService) {
 
-    @RequestMapping(value=[FUNCTION_DOMAIN_ORDER], consumes=[MediaType.APPLICATION_JSON_UTF8_VALUE], method=[RequestMethod.POST])
+    @RequestMapping(value=[FUNCTION_DOMAIN_ORDER], consumes=[MediaType.APPLICATION_JSON_VALUE], method=[RequestMethod.POST])
     @Throws(Exception::class)
     fun execute(@RequestBody req: OrderRequest<OrderRequestElement>): Flux<GeneralResponse<OrderResponse<OrderResponseElement>>> {
 

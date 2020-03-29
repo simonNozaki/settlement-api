@@ -9,7 +9,9 @@ import org.springframework.context.annotation.ComponentScan
 		"io.snozaki.service.payment.controller",
 		"io.snozaki.service.payment.service",
 		"io.snozaki.service.payment.repository",
-		"io.snozaki.service.payment.config"
+		"io.snozaki.service.payment.config",
+		//"io.snozaki.service.payment.exception"
+		"io.snozaki.service.payment.handler"
 )
 class PaymentApplication
 

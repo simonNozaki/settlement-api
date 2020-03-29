@@ -2,7 +2,6 @@ package io.snozaki.service.payment.dto
 
 import io.snozaki.service.payment.dto.error.CommonError
 import io.snozaki.service.payment.entity.merchant.Merchant
-import kotlinx.coroutines.channels.consumesAll
 
 /**
  * 加盟店APIレスポンスクラス。
