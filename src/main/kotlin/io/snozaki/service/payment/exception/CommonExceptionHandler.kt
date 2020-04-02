@@ -1,5 +1,6 @@
 package io.snozaki.service.payment.exception
 
+import io.snozaki.service.payment.config.AppLogger
 import io.snozaki.service.payment.consts.app.STATUS_MESSAGE_INTERNAL_SERVER_ERROR
 import io.snozaki.service.payment.dto.GeneralResponse
 import org.springframework.http.HttpHeaders
@@ -12,10 +13,11 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 /**
  * 共通例外ハンドラクラス
  */
-@RestControllerAdvice
+// @RestControllerAdvice
 class CommonExceptionHandler : ResponseEntityExceptionHandler() {
 
     override fun handleExceptionInternal(ex: Exception, body: Any?, headers: HttpHeaders, status: HttpStatus, request: WebRequest): ResponseEntity<Any> {
+        AppLogger.error(ex)
         return super.handleExceptionInternal(
                 ex,
                 GeneralResponse(

@@ -35,7 +35,6 @@ fun String.isValidMerchantId(): Boolean {
 
     // 半角英数字パターン
     val regex = Regex(pattern = REGEX_HALFSIZED_ALPHABET_NUMBER)
-    println(regex.matches(this))
     if (!regex.matches(this)) return false
 
     return true

@@ -1,7 +1,6 @@
 package io.snozaki.service.payment.controller.billing
 
-import io.snozaki.service.payment.config.trace
-import io.snozaki.service.payment.config.error
+import io.snozaki.service.payment.config.AppLogger
 import io.snozaki.service.payment.consts.app.API_VERSION
 import io.snozaki.service.payment.consts.app.FUNCTION_BILLING
 import io.snozaki.service.payment.consts.app.FUNCTION_DOMAIN_ORDER
@@ -49,7 +48,7 @@ class BillingRestController @Autowired constructor(private var billingService: B
         // 正常系処理
         return orderFetchService.fetch(orderIds, req.merchantId)
                 .doFirst {
-                    trace("Controllerの処理を開始します。実行スレッド:${Thread.currentThread().name}")
+                    AppLogger.trace("Controllerの処理を開始します。")
                 }
                 .flatMap { orders: Order -> billingService.bill(listOf(orders.id), req.merchantId) }
                 .map { t: Billing ->
@@ -59,9 +58,9 @@ class BillingRestController @Autowired constructor(private var billingService: B
                             value = BillingResponse(mutableListOf(BillingResponseElement(t.orderId, t.billingStatus))))
                 }
                 .doOnComplete {
-                    trace("Controllerの処理を正常に終了しました。実行スレッド:${Thread.currentThread().name}")
+                    AppLogger.trace("Controllerの処理を正常に終了しました。")
                 }
-                .doOnError { e: Throwable -> error(e) }
+                .doOnError { e: Throwable -> AppLogger.error(e) }
                 .log()
     }
 }

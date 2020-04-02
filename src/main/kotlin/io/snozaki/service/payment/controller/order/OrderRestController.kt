@@ -1,6 +1,6 @@
 package io.snozaki.service.payment.controller.order
 
-import io.snozaki.service.payment.config.trace
+import io.snozaki.service.payment.config.AppLogger
 import io.snozaki.service.payment.consts.app.API_VERSION
 import io.snozaki.service.payment.consts.app.FUNCTION_DOMAIN_ORDER
 import io.snozaki.service.payment.consts.app.STATUS_MESSAGE_OK
@@ -41,14 +41,14 @@ class OrderRestController @Autowired constructor(private var orderFetchService: 
 
         // 正常系処理
         return orderFetchService.fetch(orderIds, req.merchantId)
-                .doFirst { trace("Controllerの処理を開始します。実行スレッド:${Thread.currentThread().name}") }
+                .doFirst { AppLogger.trace("Controllerの処理を開始します。") }
                 .map { t: Order -> GeneralResponse(
                         ok = true,
                         message = STATUS_MESSAGE_OK,
                         value = OrderResponse(mutableListOf(OrderResponseElement(t)))
                 ) }
-                .doOnComplete { trace("Controllerの処理を正常に終了しました。実行スレッド:${Thread.currentThread().name}") }
-                .doOnError { e: Throwable -> error(e) }
+                .doOnComplete { AppLogger.trace("Controllerの処理を正常に終了しました。") }
+                .doOnError { e: Throwable -> AppLogger.error(e) }
                 .log()
     }
 }
